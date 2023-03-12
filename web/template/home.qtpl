@@ -1,0 +1,77 @@
+{% code type Home struct {
+  *BaseOf
+} %}
+
+{% collapsespace %}
+{% func (p *Home) body() %}
+<main class="[ body__main ][ stack center ]">
+  <div class="[ h-app h-x-app ][ text-align_center ]">
+    <picture>
+      <source srcset="/static/icon.svg"
+              type="image/svg+xml">
+      <img class="u-icon u-logo u-photo"
+           src="/static/apple-touch-icon.png"
+           loading="lazy"
+           alt="{%= p.t("%s logo", p.name) %}">
+    </picture>
+
+    <h1>
+      <a class="[ u-url ][ p-name ]"
+         href="/">{%s p.name %}</a>
+    </h1>
+    <p class="p-summary">{%= p.t("Dead simple WebSub hub") %}</p>
+  </div>
+
+  <hr>
+
+  <ul class="stack">
+    <li>
+      <span role="img"
+            aria-label="ping pong">
+        🏓
+      </span>
+      <a rel="external help"
+         hreflang="en"
+         href="https://indieweb.org/how-to-push">
+
+        {%= p.t("How to publish and consume?") %}
+      </a>
+    </li>
+    <li>
+      <span role="img"
+            aria-label="pages">
+        📑
+      </span>
+      <a rel="external help"
+         hreflang="en"
+         href="https://www.w3.org/TR/websub/">
+
+        {%= p.t("What the spec?") %}
+      </a>
+    </li>
+  </ul>
+</main>
+
+<footer class="[ body__footer ][ center ][ text-align_center ]">
+  <p>
+    Made with
+    <span role="img"
+          aria-label="love">
+      ❤️
+    </span>
+    to
+    <a rel="external"
+       href="https://source.toby3d.me/toby3d/hub">
+      open source
+    </a>
+    by
+    <a rel="author"
+       hreflang="en"
+       href="https://toby3d.me/">
+      toby3d
+    </a>
+  </p>
+  <small>v1.0.0</small>
+</footer>
+{% endfunc %}
+{% endcollapsespace %}

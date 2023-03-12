@@ -1,0 +1,24 @@
+{
+  "lang": "en",
+  "dir": "ltr",
+  "name": "WebSub",
+  "description": "A dead simple WebSub hub",
+  "short_name": "WebSub",
+  "icons": [{
+    "purpose": "maskable",
+    "sizes": "192x192",
+    "src": "icon-192x192.png",
+    "type": "image/png"
+  },{
+    "purpose": "maskable",
+    "sizes": "512x512",
+    "src": "icon-512x512.png",
+    "type": "image/png"
+  }],
+  "scope": "/",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "theme_color": "#ff6fcf",
+  "background_color": "#ff6fcf"
+}
