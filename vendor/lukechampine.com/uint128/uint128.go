@@ -2,6 +2,8 @@ package uint128 // import "lukechampine.com/uint128"
 
 import (
 	"encoding/binary"
+	"errors"
+	"fmt"
 	"math"
 	"math/big"
 	"math/bits"
@@ -377,12 +379,33 @@ func (u Uint128) PutBytes(b []byte) {
 	binary.LittleEndian.PutUint64(b[8:], u.Hi)
 }
 
+// PutBytesBE stores u in b in big-endian order. It panics if len(ip) < 16.
+func (u Uint128) PutBytesBE(b []byte) {
+	binary.BigEndian.PutUint64(b[:8], u.Hi)
+	binary.BigEndian.PutUint64(b[8:], u.Lo)
+}
+
 // Big returns u as a *big.Int.
 func (u Uint128) Big() *big.Int {
 	i := new(big.Int).SetUint64(u.Hi)
 	i = i.Lsh(i, 64)
 	i = i.Xor(i, new(big.Int).SetUint64(u.Lo))
 	return i
+}
+
+// Scan implements fmt.Scanner.
+func (u *Uint128) Scan(s fmt.ScanState, ch rune) error {
+	i := new(big.Int)
+	if err := i.Scan(s, ch); err != nil {
+		return err
+	} else if i.Sign() < 0 {
+		return errors.New("value cannot be negative")
+	} else if i.BitLen() > 128 {
+		return errors.New("value overflows Uint128")
+	}
+	u.Lo = i.Uint64()
+	u.Hi = i.Rsh(i, 64).Uint64()
+	return nil
 }
 
 // New returns the Uint128 value (lo,hi).
@@ -403,6 +426,14 @@ func FromBytes(b []byte) Uint128 {
 	)
 }
 
+// FromBytesBE converts big-endian b to a Uint128 value.
+func FromBytesBE(b []byte) Uint128 {
+	return New(
+		binary.BigEndian.Uint64(b[8:]),
+		binary.BigEndian.Uint64(b[:8]),
+	)
+}
+
 // FromBig converts i to a Uint128 value. It panics if i is negative or
 // overflows 128 bits.
 func FromBig(i *big.Int) (u Uint128) {
@@ -412,6 +443,12 @@ func FromBig(i *big.Int) (u Uint128) {
 		panic("value overflows Uint128")
 	}
 	u.Lo = i.Uint64()
-	u.Hi = new(big.Int).Rsh(i, 64).Uint64()
+	u.Hi = i.Rsh(i, 64).Uint64()
 	return u
+}
+
+// FromString parses s as a Uint128 value.
+func FromString(s string) (u Uint128, err error) {
+	_, err = fmt.Sscan(s, &u)
+	return
 }
