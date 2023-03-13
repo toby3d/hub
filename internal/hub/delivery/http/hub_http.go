@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -14,27 +15,29 @@ import (
 	"source.toby3d.me/toby3d/hub/internal/domain"
 	"source.toby3d.me/toby3d/hub/internal/hub"
 	"source.toby3d.me/toby3d/hub/internal/subscription"
+	"source.toby3d.me/toby3d/hub/internal/topic"
 	"source.toby3d.me/toby3d/hub/web/template"
 )
 
 type (
 	Request struct {
-		Callback     domain.Callback
-		Topic        domain.Topic
+		Callback     *url.URL
+		Topic        *url.URL
 		Secret       domain.Secret
 		Mode         domain.Mode
-		LeaseSeconds domain.LeaseSeconds
+		LeaseSeconds float64
 	}
 
 	Response struct {
 		Mode   domain.Mode
-		Topic  domain.Topic
 		Reason string
+		Topic  domain.Topic
 	}
 
 	NewHandlerParams struct {
 		Hub           hub.UseCase
 		Subscriptions subscription.UseCase
+		Topics        topic.UseCase
 		Matcher       language.Matcher
 		Name          string
 	}
@@ -42,12 +45,13 @@ type (
 	Handler struct {
 		hub           hub.UseCase
 		subscriptions subscription.UseCase
+		topics        topic.UseCase
 		matcher       language.Matcher
 		name          string
 	}
 )
 
-var DefaultRequestLeaseSeconds = domain.NewLeaseSeconds(uint(time.Duration(time.Hour * 24 * 10).Seconds())) // 10 days
+var DefaultRequestLeaseSeconds = time.Duration(10 * 24 * time.Hour).Seconds() // 10 days
 
 var (
 	ErrHubMode = errors.New(common.HubMode + " MUST be " + domain.ModeSubscribe.String() + " or " +
@@ -61,74 +65,71 @@ func NewHandler(params NewHandlerParams) *Handler {
 		matcher:       params.Matcher,
 		name:          params.Name,
 		subscriptions: params.Subscriptions,
+		topics:        params.Topics,
 	}
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	now := time.Now().UTC().Round(time.Second)
+
 	switch r.Method {
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	case http.MethodPost:
 		req := NewRequest()
-		if err := req.bind(r); err != nil {
+
+		var err error
+		if err = req.bind(r); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 
 			return
 		}
 
+		// TODO(toby3d): send denied ping to callback if it's not accepted by hub
+
 		s := new(domain.Subscription)
-		req.populate(s)
+		req.populate(s, now)
 
 		switch req.Mode {
-		case domain.ModeSubscribe:
-			h.hub.Subscribe(r.Context(), *s)
-		case domain.ModeUnsubscribe:
-			h.hub.Unsubscribe(r.Context(), *s)
+		case domain.ModeSubscribe, domain.ModeUnsubscribe:
+			if _, err = h.hub.Verify(r.Context(), *s, req.Mode); err != nil {
+				r.Clone(context.WithValue(r.Context(), "error", err))
+
+				w.WriteHeader(http.StatusAccepted)
+
+				return
+			}
+
+			switch req.Mode {
+			case domain.ModeSubscribe:
+				_, err = h.subscriptions.Subscribe(r.Context(), *s)
+			case domain.ModeUnsubscribe:
+				_, err = h.subscriptions.Unsubscribe(r.Context(), *s)
+			}
 		case domain.ModePublish:
-			go h.hub.Publish(r.Context(), req.Topic)
+			_, err = h.topics.Publish(r.Context(), req.Topic)
+		}
+
+		if err != nil {
+			r.Clone(context.WithValue(r.Context(), "error", err))
 		}
 
 		w.WriteHeader(http.StatusAccepted)
 	case "", http.MethodGet:
 		tags, _, _ := language.ParseAcceptLanguage(r.Header.Get(common.HeaderAcceptLanguage))
 		tag, _, _ := h.matcher.Match(tags...)
-		baseOf := template.NewBaseOf(tag, h.name)
-
-		var page template.Page
-		if r.URL.Query().Has(common.HubTopic) {
-			topic, err := domain.ParseTopic(r.URL.Query().Get(common.HubTopic))
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-
-				return
-			}
-
-			subscriptions, err := h.subscriptions.Fetch(r.Context(), *topic)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-
-				return
-			}
-
-			page = &template.Topic{
-				BaseOf:      baseOf,
-				Subscribers: len(subscriptions),
-			}
-		} else {
-			page = &template.Home{BaseOf: baseOf}
-		}
 
 		w.Header().Set(common.HeaderContentType, common.MIMETextHTMLCharsetUTF8)
-		template.WriteTemplate(w, page)
+		template.WriteTemplate(w, &template.Home{BaseOf: template.NewBaseOf(tag, h.name)})
 	}
 }
 
 func NewRequest() *Request {
 	return &Request{
 		Mode:         domain.ModeUnd,
-		Callback:     domain.Callback{},
+		Callback:     nil,
 		Secret:       domain.Secret{},
-		Topic:        domain.Topic{},
+		Topic:        nil,
 		LeaseSeconds: DefaultRequestLeaseSeconds,
 	}
 }
@@ -148,53 +149,32 @@ func (r *Request) bind(req *http.Request) error {
 		return fmt.Errorf("cannot parse %s: %w", common.HubMode, err)
 	}
 
+	// NOTE(toby3d): hub.topic
+	if !req.PostForm.Has(common.HubTopic) {
+		return fmt.Errorf("%s parameter is required, but not provided", common.HubTopic)
+	}
+
+	if r.Topic, err = url.Parse(req.PostForm.Get(common.HubTopic)); err != nil {
+		return fmt.Errorf("cannot parse %s: %w", common.HubTopic, err)
+	}
+
 	switch r.Mode {
 	case domain.ModePublish:
-		if !req.PostForm.Has(common.HubURL) {
-			return fmt.Errorf("%s parameter for %s %s is required, but not provided", common.HubURL,
-				r.Mode, common.HubMode)
-		}
-
-		topic, err := domain.ParseTopic(req.PostForm.Get(common.HubURL))
-		if err != nil {
-			return fmt.Errorf("cannot parse %s: %w", common.HubTopic, err)
-		}
-
-		r.Topic = *topic
 	case domain.ModeSubscribe, domain.ModeUnsubscribe:
-		for _, k := range []string{common.HubTopic, common.HubCallback} {
-			if req.PostForm.Has(k) {
-				continue
-			}
-
-			return fmt.Errorf("%s parameter is required, but not provided", k)
-		}
-
-		// NOTE(toby3d): hub.topic
-		topic, err := domain.ParseTopic(req.PostForm.Get(common.HubTopic))
-		if err != nil {
-			return fmt.Errorf("cannot parse %s: %w", common.HubTopic, err)
-		}
-
-		r.Topic = *topic
-
 		// NOTE(toby3d): hub.callback
-		callback, err := domain.ParseCallback(req.PostForm.Get(common.HubCallback))
-		if err != nil {
+		if !req.PostForm.Has(common.HubCallback) {
+			return fmt.Errorf("%s parameter is required, but not provided", common.HubCallback)
+		}
+
+		if r.Callback, err = url.Parse(req.PostForm.Get(common.HubCallback)); err != nil {
 			return fmt.Errorf("cannot parse %s: %w", common.HubCallback, err)
 		}
 
-		r.Callback = *callback
-
 		// NOTE(toby3d): hub.lease_seconds
 		if r.Mode != domain.ModeUnsubscribe && req.PostForm.Has(common.HubLeaseSeconds) {
-			var ls uint64
-			if ls, err = strconv.ParseUint(req.PostForm.Get(common.HubLeaseSeconds), 10, 64); err != nil {
+			r.LeaseSeconds, err = strconv.ParseFloat(req.PostForm.Get(common.HubLeaseSeconds), 64)
+			if err != nil {
 				return fmt.Errorf("cannot parse %s: %w", common.HubLeaseSeconds, err)
-			}
-
-			if ls != 0 {
-				r.LeaseSeconds = domain.NewLeaseSeconds(uint(ls))
 			}
 		}
 
@@ -218,11 +198,13 @@ func (r *Request) bind(req *http.Request) error {
 	return nil
 }
 
-func (r Request) populate(s *domain.Subscription) {
+func (r Request) populate(s *domain.Subscription, ts time.Time) {
+	s.CreatedAt = ts
+	s.UpdatedAt = ts
+	s.ExpiredAt = ts.Add(time.Duration(r.LeaseSeconds) * time.Second).Round(time.Second)
 	s.Callback = r.Callback
-	s.LeaseSeconds = r.LeaseSeconds
-	s.Secret = r.Secret
 	s.Topic = r.Topic
+	s.Secret = r.Secret
 }
 
 func NewResponse(t domain.Topic, err error) *Response {

@@ -38,6 +38,9 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 
 {% func (p *BaseOf) head() %}
 {% comment %}https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs{% endcomment %}
+<link rel="manifest"
+      href="/static/manifest.webmanifest">
+
 <link rel="icon"
       href="/static/favicon.ico"
       sizes="any">
@@ -48,9 +51,6 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 
 <link rel="apple-touch-icon"
       href="/static/apple-touch-icon.png">
-
-<link rel="manifest"
-      href="/static/manifest.webmanifest">
 {% endfunc %}
 
 {% func (p *BaseOf) body() %}{% endfunc %}

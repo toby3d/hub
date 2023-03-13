@@ -1,29 +1,25 @@
 package domain
 
+import "net/url"
+
 // SUID describes a subscription's unique key is the tuple ([Topic] URL,
 // Subscriber [Callback] URL).
 type SUID struct {
-	suid [2]string
+	topic    string
+	callback string
 }
 
-func NewSSID(topic Topic, callback Callback) SUID {
+func NewSSID(topic Topic, callback *url.URL) SUID {
 	return SUID{
-		suid: [2]string{topic.topic.String(), callback.callback.String()},
+		topic:    topic.Self.String(),
+		callback: callback.String(),
 	}
 }
 
 func (suid SUID) Equal(target SUID) bool {
-	for i := range suid.suid {
-		if suid.suid[i] == target.suid[i] {
-			continue
-		}
-
-		return false
-	}
-
-	return true
+	return suid.topic == target.topic && suid.callback == target.callback
 }
 
 func (suid SUID) GoString() string {
-	return "domain.SUID(" + suid.suid[0] + ":" + suid.suid[1] + ")"
+	return "domain.SUID(" + suid.topic + ":" + suid.callback + ")"
 }

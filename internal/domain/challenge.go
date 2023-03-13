@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"bytes"
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
@@ -11,7 +10,7 @@ import (
 )
 
 type Challenge struct {
-	challenge []byte
+	challenge string
 }
 
 func NewChallenge(length uint8) (*Challenge, error) {
@@ -20,15 +19,15 @@ func NewChallenge(length uint8) (*Challenge, error) {
 		return nil, fmt.Errorf("cannot create a new challenge: %w", err)
 	}
 
-	return &Challenge{challenge: []byte(base64.URLEncoding.EncodeToString(src))}, nil
+	return &Challenge{challenge: base64.URLEncoding.EncodeToString(src)}, nil
 }
 
 func (c Challenge) AddQuery(q url.Values) {
 	q.Add(common.HubChallenge, string(c.challenge))
 }
 
-func (c Challenge) Equal(target []byte) bool {
-	return bytes.Equal(c.challenge, target)
+func (c Challenge) Equal(target string) bool {
+	return c.challenge == target
 }
 
 func (c Challenge) String() string {

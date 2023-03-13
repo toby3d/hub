@@ -15,10 +15,15 @@ type memorySubscriptionRepository struct {
 	subscriptions map[domain.SUID]domain.Subscription
 }
 
-// Create implements subscription.Repository
+func NewMemorySubscriptionRepository() subscription.Repository {
+	return &memorySubscriptionRepository{
+		mutex:         new(sync.RWMutex),
+		subscriptions: make(map[domain.SUID]domain.Subscription),
+	}
+}
+
 func (repo *memorySubscriptionRepository) Create(ctx context.Context, suid domain.SUID, s domain.Subscription) error {
-	_, err := repo.Get(ctx, suid)
-	if err != nil {
+	if _, err := repo.Get(ctx, suid); err != nil {
 		if !errors.Is(err, subscription.ErrNotExist) {
 			return fmt.Errorf("cannot create subscription: %w", err)
 		}
@@ -34,7 +39,6 @@ func (repo *memorySubscriptionRepository) Create(ctx context.Context, suid domai
 	return nil
 }
 
-// Delete implements subscription.Repository
 func (repo *memorySubscriptionRepository) Delete(ctx context.Context, suid domain.SUID) error {
 	if _, err := repo.Get(ctx, suid); err != nil {
 		if !errors.Is(err, subscription.ErrNotExist) {
@@ -52,7 +56,6 @@ func (repo *memorySubscriptionRepository) Delete(ctx context.Context, suid domai
 	return nil
 }
 
-// Get implements subscription.Repository
 func (repo *memorySubscriptionRepository) Get(_ context.Context, suid domain.SUID) (*domain.Subscription, error) {
 	repo.mutex.RLock()
 	defer repo.mutex.RUnlock()
@@ -64,14 +67,14 @@ func (repo *memorySubscriptionRepository) Get(_ context.Context, suid domain.SUI
 	return nil, subscription.ErrNotExist
 }
 
-func (repo *memorySubscriptionRepository) Fetch(ctx context.Context, t domain.Topic) ([]domain.Subscription, error) {
+func (repo *memorySubscriptionRepository) Fetch(ctx context.Context, t *domain.Topic) ([]domain.Subscription, error) {
 	repo.mutex.RLock()
 	defer repo.mutex.RUnlock()
 
 	out := make([]domain.Subscription, 0)
 
 	for _, s := range repo.subscriptions {
-		if !s.Topic.Equal(t) {
+		if t != nil && t.Self.String() != s.Topic.String() {
 			continue
 		}
 
@@ -99,11 +102,4 @@ func (repo *memorySubscriptionRepository) Update(ctx context.Context, suid domai
 	repo.subscriptions[suid] = *out
 
 	return nil
-}
-
-func NewMemorySubscriptionRepository() subscription.Repository {
-	return &memorySubscriptionRepository{
-		mutex:         new(sync.RWMutex),
-		subscriptions: make(map[domain.SUID]domain.Subscription),
-	}
 }

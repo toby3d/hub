@@ -5,6 +5,8 @@ const (
 	MIMEApplicationFormCharsetUTF8 = MIMEApplicationForm + "; " + charsetUTF8
 	MIMETextHTML                   = "text/html"
 	MIMETextHTMLCharsetUTF8        = MIMETextHTML + "; " + charsetUTF8
+	MIMETextPlain                  = "text/plain"
+	MIMETextPlainCharsetUTF8       = MIMETextPlain + "; " + charsetUTF8
 
 	charsetUTF8 = "charset=UTF-8"
 )

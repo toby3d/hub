@@ -5,6 +5,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"log"
@@ -24,6 +25,8 @@ import (
 	"source.toby3d.me/toby3d/hub/internal/middleware"
 	subscriptionmemoryrepo "source.toby3d.me/toby3d/hub/internal/subscription/repository/memory"
 	subscriptionucase "source.toby3d.me/toby3d/hub/internal/subscription/usecase"
+	topicmemoryrepo "source.toby3d.me/toby3d/hub/internal/topic/repository/memory"
+	topicucase "source.toby3d.me/toby3d/hub/internal/topic/usecase"
 	"source.toby3d.me/toby3d/hub/internal/urlutil"
 )
 
@@ -50,6 +53,8 @@ func init() {
 }
 
 func main() {
+	ctx := context.Background()
+
 	config := new(domain.Config)
 	if err := env.Parse(config, env.Options{Prefix: "HUB_"}); err != nil {
 		logger.Fatalln(err)
@@ -60,32 +65,40 @@ func main() {
 		logger.Fatalln(err)
 	}
 
-	client := &http.Client{Timeout: 1 * time.Second}
+	client := &http.Client{Timeout: 5 * time.Second}
 	matcher := language.NewMatcher(message.DefaultCatalog.Languages())
 	subscriptions := subscriptionmemoryrepo.NewMemorySubscriptionRepository()
-	hub := hubhttprelivery.NewHandler(hubhttprelivery.NewHandlerParams{
-		Hub:           hubucase.NewHubUseCase(subscriptions, client, config.BaseURL),
-		Subscriptions: subscriptionucase.NewSubscriptionUseCase(subscriptions),
+	topics := topicmemoryrepo.NewMemoryTopicRepository()
+	topicService := topicucase.NewTopicUseCase(topics, client)
+	subscriptionService := subscriptionucase.NewSubscriptionUseCase(subscriptions, topics, client)
+	hubService := hubucase.NewHubUseCase(topics, subscriptions, client, config.BaseURL)
+
+	handler := hubhttprelivery.NewHandler(hubhttprelivery.NewHandlerParams{
+		Hub:           hubService,
+		Subscriptions: subscriptionService,
+		Topics:        topicService,
 		Matcher:       matcher,
 		Name:          config.Name,
 	})
 
 	server := &http.Server{
-		Addr: ":3000",
+		Addr: config.Bind,
 		Handler: http.HandlerFunc(middleware.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			head, _ := urlutil.ShiftPath(r.URL.Path)
 
 			switch head {
 			case "":
-				hub.ServeHTTP(w, r)
+				handler.ServeHTTP(w, r)
 			case "static":
 				http.FileServer(http.FS(static)).ServeHTTP(w, r)
 			}
 		}).Intercept(middleware.LogFmt())),
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
 		ErrorLog:     logger,
 	}
+
+	go hubService.ListenAndServe(ctx)
 
 	if err = server.ListenAndServe(); err != nil {
 		logger.Fatalln(err)

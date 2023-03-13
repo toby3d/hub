@@ -7,5 +7,6 @@ import (
 )
 
 type UseCase interface {
-	Fetch(ctx context.Context, topic domain.Topic) ([]domain.Subscription, error)
+	Subscribe(ctx context.Context, s domain.Subscription) (bool, error)
+	Unsubscribe(ctx context.Context, s domain.Subscription) (bool, error)
 }

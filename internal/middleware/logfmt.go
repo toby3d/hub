@@ -68,6 +68,7 @@ func LogFmtWithConfig(config LogFmtConfig) Interceptor {
 
 		next(rw, r)
 
+		rw.error, _ = r.Context().Value("error").(error)
 		end := time.Now().UTC()
 
 		encoder.EncodeKeyvals(

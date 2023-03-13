@@ -8,9 +8,8 @@ import (
 )
 
 type UseCase interface {
-	Subscribe(ctx context.Context, subscription domain.Subscription) (bool, error)
-	Unsubscribe(ctx context.Context, subscription domain.Subscription) (bool, error)
-	Publish(ctx context.Context, t domain.Topic) error
+	Verify(ctx context.Context, subscription domain.Subscription, mode domain.Mode) (bool, error)
+	ListenAndServe(ctx context.Context) error
 }
 
 var (
