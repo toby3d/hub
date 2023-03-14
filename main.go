@@ -100,6 +100,7 @@ func main() {
 
 	go hubService.ListenAndServe(ctx)
 
+	logger.Printf("started %s on %s: %s", config.Name, config.Bind, config.BaseURL.String())
 	if err = server.ListenAndServe(); err != nil {
 		logger.Fatalln(err)
 	}
