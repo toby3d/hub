@@ -2,8 +2,13 @@ package usecase_test
 
 import (
 	"context"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"testing"
 
+	"source.toby3d.me/toby3d/hub/internal/common"
 	"source.toby3d.me/toby3d/hub/internal/domain"
 	subscriptionmemoryrepo "source.toby3d.me/toby3d/hub/internal/subscription/repository/memory"
 	"source.toby3d.me/toby3d/hub/internal/subscription/usecase"
@@ -13,11 +18,24 @@ import (
 func TestSubscriptionUseCase_Subscribe(t *testing.T) {
 	t.Parallel()
 
-	subscription := domain.TestSubscription(t, "https://example.com/")
+	topic := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(common.HeaderContentType, common.MIMETextPlainCharsetUTF8)
+		fmt.Fprint(w, "hello, world")
+	}))
+	t.Cleanup(topic.Close)
+
+	callback := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(common.HeaderContentType, common.MIMETextPlainCharsetUTF8)
+		fmt.Fprint(w, "hello, world")
+	}))
+	t.Cleanup(callback.Close)
+
+	subscription := domain.TestSubscription(t, callback.URL)
+	subscription.Topic, _ = url.Parse(topic.URL + "/")
 	topics := topicmemoryrepo.NewMemoryTopicRepository()
 	subscriptions := subscriptionmemoryrepo.NewMemorySubscriptionRepository()
 
-	ucase := usecase.NewSubscriptionUseCase(subscriptions, topics)
+	ucase := usecase.NewSubscriptionUseCase(subscriptions, topics, callback.Client())
 
 	ok, err := ucase.Subscribe(context.Background(), *subscription)
 	if err != nil {
@@ -49,6 +67,12 @@ func TestSubscriptionUseCase_Subscribe(t *testing.T) {
 func TestSubscriptionUseCase_Unsubscribe(t *testing.T) {
 	t.Parallel()
 
+	srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(common.HeaderContentType, common.MIMETextPlainCharsetUTF8)
+		fmt.Fprint(w, "hello, world")
+	}))
+	t.Cleanup(srv.Close)
+
 	subscription := domain.TestSubscription(t, "https://example.com/")
 	topics := topicmemoryrepo.NewMemoryTopicRepository()
 	subscriptions := subscriptionmemoryrepo.NewMemorySubscriptionRepository()
@@ -57,7 +81,7 @@ func TestSubscriptionUseCase_Unsubscribe(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	ok, err := usecase.NewSubscriptionUseCase(subscriptions, topics).
+	ok, err := usecase.NewSubscriptionUseCase(subscriptions, topics, srv.Client()).
 		Unsubscribe(context.Background(), *subscription)
 	if err != nil {
 		t.Fatal(err)

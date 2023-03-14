@@ -48,7 +48,7 @@ func TestHandler_ServeHTTP_Subscribe(t *testing.T) {
 	w := httptest.NewRecorder()
 	delivery.NewHandler(delivery.NewHandlerParams{
 		Hub:           hub,
-		Subscriptions: subscriptionucase.NewSubscriptionUseCase(subscriptions, topics),
+		Subscriptions: subscriptionucase.NewSubscriptionUseCase(subscriptions, topics, srv.Client()),
 		Topics:        topicucase.NewTopicUseCase(topics, srv.Client()),
 		Matcher:       language.NewMatcher([]language.Tag{language.English}),
 		Name:          "WebSub",
@@ -94,7 +94,7 @@ func TestHandler_ServeHTTP_Unsubscribe(t *testing.T) {
 	w := httptest.NewRecorder()
 	delivery.NewHandler(delivery.NewHandlerParams{
 		Hub:           hub,
-		Subscriptions: subscriptionucase.NewSubscriptionUseCase(subscriptions, topics),
+		Subscriptions: subscriptionucase.NewSubscriptionUseCase(subscriptions, topics, srv.Client()),
 		Topics:        topicucase.NewTopicUseCase(topics, srv.Client()),
 		Matcher:       language.NewMatcher([]language.Tag{language.English}),
 		Name:          "WebSub",
