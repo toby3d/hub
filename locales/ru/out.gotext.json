@@ -2,6 +2,11 @@
     "language": "ru",
     "messages": [
         {
+            "id": "version",
+            "message": "version",
+            "translation": "версия"
+        },
+        {
             "id": "{Name} logo",
             "message": "{Name} logo",
             "translation": "логотип {Name}",

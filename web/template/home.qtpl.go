@@ -45,32 +45,32 @@ func (p *Home) streambody(qw422016 *qt422016.Writer) {
 //line web/template/home.qtpl:49
 	p.streamt(qw422016, "What the spec?")
 //line web/template/home.qtpl:49
-	qw422016.N().S(` </a> </li> </ul> </main> <footer class="[ body__footer ][ center ][ text-align_center ]"> <p> Made with <span role="img" aria-label="love"> ❤️ </span> to <a rel="external" href="https://source.toby3d.me/toby3d/hub"> open source </a> by <a rel="author" hreflang="en" href="https://toby3d.me/"> toby3d </a> </p> <small>v1.0.0</small> </footer> `)
-//line web/template/home.qtpl:76
+	qw422016.N().S(` </a> </li> </ul> </main> `)
+//line web/template/home.qtpl:54
 }
 
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 func (p *Home) writebody(qq422016 qtio422016.Writer) {
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	p.streambody(qw422016)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	qt422016.ReleaseWriter(qw422016)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 }
 
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 func (p *Home) body() string {
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	qb422016 := qt422016.AcquireByteBuffer()
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	p.writebody(qb422016)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	qs422016 := string(qb422016.B)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	qt422016.ReleaseByteBuffer(qb422016)
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 	return qs422016
-//line web/template/home.qtpl:76
+//line web/template/home.qtpl:54
 }

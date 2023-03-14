@@ -2,6 +2,13 @@
     "language": "en",
     "messages": [
         {
+            "id": "version",
+            "message": "version",
+            "translation": "version",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "{Name} logo",
             "message": "{Name} logo",
             "translation": "{Name} logo",

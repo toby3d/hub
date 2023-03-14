@@ -39,29 +39,30 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"%d subscribers":              4,
-	"%s logo":                     0,
-	"Dead simple WebSub hub":      1,
-	"How to publish and consume?": 2,
-	"What the spec?":              3,
+	"%d subscribers":              5,
+	"%s logo":                     1,
+	"Dead simple WebSub hub":      2,
+	"How to publish and consume?": 3,
+	"What the spec?":              4,
+	"version":                     0,
 }
 
-var enIndex = []uint32{ // 6 elements
-	0x00000000, 0x0000000b, 0x00000022, 0x0000003e,
-	0x0000004d, 0x0000005f,
-} // Size: 48 bytes
+var enIndex = []uint32{ // 7 elements
+	0x00000000, 0x00000008, 0x00000013, 0x0000002a,
+	0x00000046, 0x00000055, 0x00000067,
+} // Size: 52 bytes
 
-const enData string = "" + // Size: 95 bytes
-	"\x02%[1]s logo\x02Dead simple WebSub hub\x02How to publish and consume?" +
-	"\x02What the spec?\x02%[1]d subscribers"
+const enData string = "" + // Size: 103 bytes
+	"\x02version\x02%[1]s logo\x02Dead simple WebSub hub\x02How to publish an" +
+	"d consume?\x02What the spec?\x02%[1]d subscribers"
 
-var ruIndex = []uint32{ // 6 elements
-	0x00000000, 0x00000015, 0x00000038, 0x0000006d,
-	0x00000083, 0x000000a0,
-} // Size: 48 bytes
+var ruIndex = []uint32{ // 7 elements
+	0x00000000, 0x0000000d, 0x00000022, 0x00000045,
+	0x0000007a, 0x00000090, 0x000000ad,
+} // Size: 52 bytes
 
-const ruData string = "" + // Size: 160 bytes
-	"\x02логотип %[1]s\x02Простейший хаб WebSub\x02Как публиковать и принимат" +
-	"ь?\x02В чём спека?\x02%[1]d подписчиков"
+const ruData string = "" + // Size: 173 bytes
+	"\x02версия\x02логотип %[1]s\x02Простейший хаб WebSub\x02Как публиковать " +
+	"и принимать?\x02В чём спека?\x02%[1]d подписчиков"
 
-	// Total table size 351 bytes (0KiB); checksum: D963980B
+	// Total table size 380 bytes (0KiB); checksum: 7D8C2E8B

@@ -51,27 +51,5 @@
     </li>
   </ul>
 </main>
-
-<footer class="[ body__footer ][ center ][ text-align_center ]">
-  <p>
-    Made with
-    <span role="img"
-          aria-label="love">
-      ❤️
-    </span>
-    to
-    <a rel="external"
-       href="https://source.toby3d.me/toby3d/hub">
-      open source
-    </a>
-    by
-    <a rel="author"
-       hreflang="en"
-       href="https://toby3d.me/">
-      toby3d
-    </a>
-  </p>
-  <small>v1.0.0</small>
-</footer>
 {% endfunc %}
 {% endcollapsespace %}
