@@ -1,9 +1,9 @@
 # github.com/DATA-DOG/go-sqlmock v1.5.0
 ## explicit
 github.com/DATA-DOG/go-sqlmock
-# github.com/caarlos0/env/v6 v6.10.1
+# github.com/caarlos0/env/v7 v7.1.0
 ## explicit; go 1.17
-github.com/caarlos0/env/v6
+github.com/caarlos0/env/v7
 # github.com/dustin/go-humanize v1.0.1
 ## explicit; go 1.16
 github.com/dustin/go-humanize

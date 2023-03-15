@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
-	github.com/caarlos0/env/v6 v6.10.1
+	github.com/caarlos0/env/v7 v7.1.0
 	github.com/go-logfmt/logfmt v0.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/valyala/quicktemplate v1.7.0
