@@ -40,9 +40,6 @@ steps:
         - "systemctl start websub"
     depends_on:
       - build
-    when:
-      branch:
-        - master
 
 volumes:
   - name: modules
