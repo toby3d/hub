@@ -7,7 +7,7 @@ import (
 
 type Config struct {
 	BaseURL *url.URL `env:"BASE_URL" envDefault:"http://localhost:3000/"`
-	Bind    string   `end:"BIND" envDefault:":3000"`
+	Bind    string   `end:"BIND,required" envDefault:":3000"`
 	Name    string   `env:"NAME" envDefault:"WebSub"`
 }
 

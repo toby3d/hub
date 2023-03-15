@@ -56,7 +56,11 @@ func main() {
 	ctx := context.Background()
 
 	config := new(domain.Config)
-	if err := env.Parse(config, env.Options{Prefix: "HUB_"}); err != nil {
+	if err := env.Parse(config, env.Options{
+		Prefix:                "HUB_",
+		TagName:               "env",
+		UseFieldNameByDefault: true,
+	}); err != nil {
 		logger.Fatalln(err)
 	}
 
