@@ -33,11 +33,11 @@ steps:
       key:
         from_secret: "SSH_PRIVATE_KEY"
       source: "./hub"
-      target: "/etc/hub/"
+      target: "/etc/hub/hub"
       prescript:
-        - "systemctl stop websub"
+        - "systemctl stop hub"
       script:
-        - "systemctl start websub"
+        - "systemctl start hub"
     depends_on:
       - build
 
