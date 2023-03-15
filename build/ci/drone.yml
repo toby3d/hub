@@ -40,6 +40,9 @@ steps:
         - "systemctl start hub"
     depends_on:
       - build
+    when:
+      branch:
+        - master
 
 volumes:
   - name: modules
