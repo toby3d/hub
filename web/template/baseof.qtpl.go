@@ -77,12 +77,8 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 
 //line web/template/baseof.qtpl:33
 func (p *BaseOf) streamlang(qw422016 *qt422016.Writer) {
-//line web/template/baseof.qtpl:33
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:34
 	qw422016.E().S(p.language.String())
-//line web/template/baseof.qtpl:34
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:35
 }
 
@@ -114,12 +110,8 @@ func (p *BaseOf) lang() string {
 
 //line web/template/baseof.qtpl:37
 func (p *BaseOf) streamtitle(qw422016 *qt422016.Writer) {
-//line web/template/baseof.qtpl:37
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:38
 	qw422016.E().S(p.name)
-//line web/template/baseof.qtpl:38
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:39
 }
 
@@ -151,10 +143,32 @@ func (p *BaseOf) title() string {
 
 //line web/template/baseof.qtpl:41
 func (p *BaseOf) streamhead(qw422016 *qt422016.Writer) {
-//line web/template/baseof.qtpl:41
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:42
-	qw422016.N().S(` <link rel="manifest" href="/static/manifest.webmanifest"> <link rel="icon" href="/static/favicon.ico" sizes="any"> <link rel="icon" href="/static/icon.svg" type="image/svg+xml"> <link rel="apple-touch-icon" href="/static/apple-touch-icon.png"> `)
+	qw422016.N().S(`<link rel="manifest"`)
+//line web/template/baseof.qtpl:44
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:44
+	qw422016.N().S(`href="/static/manifest.webmanifest"><link rel="icon"`)
+//line web/template/baseof.qtpl:47
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:47
+	qw422016.N().S(`href="/static/favicon.ico"`)
+//line web/template/baseof.qtpl:48
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:48
+	qw422016.N().S(`sizes="any"><link rel="icon"`)
+//line web/template/baseof.qtpl:51
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:51
+	qw422016.N().S(`href="/static/icon.svg"`)
+//line web/template/baseof.qtpl:52
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:52
+	qw422016.N().S(`type="image/svg+xml"><link rel="apple-touch-icon"`)
+//line web/template/baseof.qtpl:55
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:55
+	qw422016.N().S(`href="/static/apple-touch-icon.png">`)
 //line web/template/baseof.qtpl:56
 }
 
@@ -217,12 +231,8 @@ func (p *BaseOf) body() string {
 
 //line web/template/baseof.qtpl:60
 func (p *BaseOf) streamt(qw422016 *qt422016.Writer, format message.Reference, args ...any) {
-//line web/template/baseof.qtpl:60
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:61
 	qw422016.E().S(p.printer.Sprintf(format, args...))
-//line web/template/baseof.qtpl:61
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:62
 }
 
@@ -255,23 +265,45 @@ func (p *BaseOf) t(format message.Reference, args ...any) string {
 //line web/template/baseof.qtpl:64
 func StreamTemplate(qw422016 *qt422016.Writer, p Page) {
 //line web/template/baseof.qtpl:64
-	qw422016.N().S(` <!DOCTYPE html> <html class="page" lang="`)
+	qw422016.N().S(`<!DOCTYPE html><html class="page"`)
+//line web/template/baseof.qtpl:67
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:67
+	qw422016.N().S(`lang="`)
 //line web/template/baseof.qtpl:67
 	p.streamlang(qw422016)
 //line web/template/baseof.qtpl:67
-	qw422016.N().S(`" dir="ltr"> <head> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>`)
+	qw422016.N().S(`"`)
+//line web/template/baseof.qtpl:68
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:68
+	qw422016.N().S(`dir="ltr"><head><meta name="viewport"`)
+//line web/template/baseof.qtpl:72
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:72
+	qw422016.N().S(`content="width=device-width, initial-scale=1"><title>`)
 //line web/template/baseof.qtpl:74
 	p.streamtitle(qw422016)
 //line web/template/baseof.qtpl:74
-	qw422016.N().S(`</title> <link rel="preload stylesheet" as="style" href="/static/style.css" type="text/css"> `)
+	qw422016.N().S(`</title><link rel="preload stylesheet"`)
+//line web/template/baseof.qtpl:77
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:77
+	qw422016.N().S(`as="style"`)
+//line web/template/baseof.qtpl:78
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:78
+	qw422016.N().S(`href="/static/style.css"`)
+//line web/template/baseof.qtpl:79
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:79
+	qw422016.N().S(`type="text/css">`)
 //line web/template/baseof.qtpl:81
 	p.streamhead(qw422016)
 //line web/template/baseof.qtpl:81
-	qw422016.N().S(` </head> <body class="page__body cover"> `)
+	qw422016.N().S(`</head><body class="[ page__body ][ cover ]">`)
 //line web/template/baseof.qtpl:85
 	p.streambody(qw422016)
-//line web/template/baseof.qtpl:85
-	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:88
 	var path, vcsRevision string
 
@@ -288,35 +320,51 @@ func StreamTemplate(qw422016 *qt422016.Writer, p Page) {
 	}
 
 //line web/template/baseof.qtpl:101
-	qw422016.N().S(` <footer class="[ body__footer ][ center ][ text-align_center ]"> <p> Made with <span role="img" aria-label="love"> ❤️ </span> to <a rel="external" href="https://`)
+	qw422016.N().S(`<footer class="[ body__footer ][ center ][ text-align_center ]"><p>Made with<span role="img"`)
+//line web/template/baseof.qtpl:107
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:107
+	qw422016.N().S(`aria-label="love">❤️</span>to<a rel="external"`)
+//line web/template/baseof.qtpl:112
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:112
+	qw422016.N().S(`href="https://`)
 //line web/template/baseof.qtpl:112
 	qw422016.E().S(path)
 //line web/template/baseof.qtpl:112
-	qw422016.N().S(`"> open source </a> by <a rel="author" hreflang="en" href="https://toby3d.me/"> toby3d </a> </p> `)
-//line web/template/baseof.qtpl:123
+	qw422016.N().S(`">open source</a>by<a rel="author"`)
+//line web/template/baseof.qtpl:117
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:117
+	qw422016.N().S(`href="https://toby3d.me/">toby3d</a></p>`)
+//line web/template/baseof.qtpl:122
 	if vcsRevision != "" {
-//line web/template/baseof.qtpl:123
-		qw422016.N().S(` <small> `)
-//line web/template/baseof.qtpl:125
+//line web/template/baseof.qtpl:122
+		qw422016.N().S(`<small>`)
+//line web/template/baseof.qtpl:124
 		p.streamt(qw422016, "version")
+//line web/template/baseof.qtpl:124
+		qw422016.N().S(`<a href="https://`)
 //line web/template/baseof.qtpl:125
-		qw422016.N().S(` <a href="https://`)
-//line web/template/baseof.qtpl:126
 		qw422016.E().S(path)
-//line web/template/baseof.qtpl:126
+//line web/template/baseof.qtpl:125
 		qw422016.N().S(`/commit/`)
-//line web/template/baseof.qtpl:126
+//line web/template/baseof.qtpl:125
 		qw422016.E().S(vcsRevision)
+//line web/template/baseof.qtpl:125
+		qw422016.N().S(`"`)
 //line web/template/baseof.qtpl:126
-		qw422016.N().S(`" target="_blank"> `)
+		qw422016.N().S(` `)
+//line web/template/baseof.qtpl:126
+		qw422016.N().S(`target="_blank">`)
 //line web/template/baseof.qtpl:128
 		qw422016.E().S(vcsRevision[:7])
 //line web/template/baseof.qtpl:128
-		qw422016.N().S(`</a> </small> `)
+		qw422016.N().S(`</a></small>`)
 //line web/template/baseof.qtpl:131
 	}
 //line web/template/baseof.qtpl:131
-	qw422016.N().S(` </footer> </body> </html> `)
+	qw422016.N().S(`</footer></body></html>`)
 //line web/template/baseof.qtpl:135
 }
 

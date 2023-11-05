@@ -25,52 +25,96 @@ type Home struct {
 //line web/template/home.qtpl:6
 func (p *Home) streambody(qw422016 *qt422016.Writer) {
 //line web/template/home.qtpl:6
-	qw422016.N().S(` <main class="[ body__main ][ stack center ]"> <div class="[ h-app h-x-app ][ text-align_center ]"> <picture> <source srcset="/static/icon.svg" type="image/svg+xml"> <img class="u-icon u-logo u-photo" src="/static/apple-touch-icon.png" loading="lazy" alt="`)
+	qw422016.N().S(`<main class="[ body__main ][ stack center ]"><div class="[ h-app h-x-app ][ text-align_center ]"><picture><source srcset="/static/icon.svg"`)
+//line web/template/home.qtpl:11
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:11
+	qw422016.N().S(`type="image/svg+xml"><img class="u-icon u-logo u-photo"`)
+//line web/template/home.qtpl:13
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:13
+	qw422016.N().S(`src="/static/apple-touch-icon.png"`)
+//line web/template/home.qtpl:14
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:14
+	qw422016.N().S(`loading="lazy"`)
+//line web/template/home.qtpl:15
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:15
+	qw422016.N().S(`alt="`)
 //line web/template/home.qtpl:15
 	p.streamt(qw422016, "%s logo", p.name)
 //line web/template/home.qtpl:15
-	qw422016.N().S(`"> </picture> <h1> <a class="[ u-url ][ p-name ]" href="/">`)
+	qw422016.N().S(`"></picture><h1><a class="[ u-url ][ p-name ]"`)
 //line web/template/home.qtpl:20
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:20
+	qw422016.N().S(`href="/">`)
+//line web/template/home.qtpl:22
 	qw422016.E().S(p.name)
-//line web/template/home.qtpl:20
-	qw422016.N().S(`</a> </h1> <p class="p-summary">`)
 //line web/template/home.qtpl:22
+	qw422016.N().S(`</a></h1><p class="p-summary">`)
+//line web/template/home.qtpl:25
 	p.streamt(qw422016, "Dead simple WebSub hub")
-//line web/template/home.qtpl:22
-	qw422016.N().S(`</p> </div> <hr> <ul class="stack"> <li> <span role="img" aria-label="ping pong"> 🏓 </span> <a rel="external help" hreflang="en" href="https://indieweb.org/how-to-push"> `)
-//line web/template/home.qtpl:37
+//line web/template/home.qtpl:25
+	qw422016.N().S(`</p></div><hr><ul class="stack"><li><span role="img"`)
+//line web/template/home.qtpl:33
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:33
+	qw422016.N().S(`aria-label="ping pong">🏓</span><a rel="external help"`)
+//line web/template/home.qtpl:38
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:38
+	qw422016.N().S(`hreflang="en"`)
+//line web/template/home.qtpl:39
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:39
+	qw422016.N().S(`href="https://indieweb.org/how-to-push">`)
+//line web/template/home.qtpl:41
 	p.streamt(qw422016, "How to publish and consume?")
-//line web/template/home.qtpl:37
-	qw422016.N().S(` </a> </li> <li> <span role="img" aria-label="pages"> 📑 </span> <a rel="external help" hreflang="en" href="https://www.w3.org/TR/websub/"> `)
-//line web/template/home.qtpl:49
+//line web/template/home.qtpl:41
+	qw422016.N().S(`</a></li><li><span role="img"`)
+//line web/template/home.qtpl:46
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:46
+	qw422016.N().S(`aria-label="pages">📑</span><a rel="external help"`)
+//line web/template/home.qtpl:51
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:51
+	qw422016.N().S(`hreflang="en"`)
+//line web/template/home.qtpl:52
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:52
+	qw422016.N().S(`href="https://www.w3.org/TR/websub/">`)
+//line web/template/home.qtpl:54
 	p.streamt(qw422016, "What the spec?")
-//line web/template/home.qtpl:49
-	qw422016.N().S(` </a> </li> </ul> </main> `)
 //line web/template/home.qtpl:54
+	qw422016.N().S(`</a></li></ul></main>`)
+//line web/template/home.qtpl:59
 }
 
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 func (p *Home) writebody(qq422016 qtio422016.Writer) {
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	p.streambody(qw422016)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	qt422016.ReleaseWriter(qw422016)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 }
 
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 func (p *Home) body() string {
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	qb422016 := qt422016.AcquireByteBuffer()
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	p.writebody(qb422016)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	qs422016 := string(qb422016.B)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	qt422016.ReleaseByteBuffer(qb422016)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 	return qs422016
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:59
 }
