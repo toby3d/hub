@@ -29,7 +29,7 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 }
 %}
 
-{% collapsespace %}
+{% stripspace %}
 {% func (p *BaseOf) lang() %}
 {%s p.language.String() %}
 {% endfunc %}
@@ -41,18 +41,18 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 {% func (p *BaseOf) head() %}
 {% comment %}https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs{% endcomment %}
 <link rel="manifest"
-      href="/static/manifest.webmanifest">
+{% space %}href="/static/manifest.webmanifest">
 
 <link rel="icon"
-      href="/static/favicon.ico"
-      sizes="any">
+{% space %}href="/static/favicon.ico"
+{% space %}sizes="any">
 
 <link rel="icon"
-      href="/static/icon.svg"
-      type="image/svg+xml">
+{% space %}href="/static/icon.svg"
+{% space %}type="image/svg+xml">
 
 <link rel="apple-touch-icon"
-      href="/static/apple-touch-icon.png">
+{% space %}href="/static/apple-touch-icon.png">
 {% endfunc %}
 
 {% func (p *BaseOf) body() %}{% endfunc %}
@@ -64,24 +64,24 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 {% func Template(p Page) %}
 <!DOCTYPE html>
 <html class="page"
-      lang="{%= p.lang() %}"
-      dir="ltr">
+{% space %}lang="{%= p.lang() %}"
+{% space %}dir="ltr">
 
   <head>
     <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    {% space %}content="width=device-width, initial-scale=1">
 
     <title>{%= p.title() %}</title>
 
     <link rel="preload stylesheet"
-          as="style"
-          href="/static/style.css"
-          type="text/css">
+    {% space %}as="style"
+    {% space %}href="/static/style.css"
+    {% space %}type="text/css">
 
     {%= p.head() %}
   </head>
 
-  <body class="page__body cover">
+  <body class="[ page__body ][ cover ]">
     {%= p.body() %}
 
     {% code
@@ -102,20 +102,19 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 
     <footer class="[ body__footer ][ center ][ text-align_center ]">
       <p>
-        Made with
+        Made with{% space %}
         <span role="img"
-              aria-label="love">
+        {% space %}aria-label="love">
           ❤️
         </span>
-        to
+        {% space %}to{% space %}
         <a rel="external"
-           href="https://{%s path %}">
+        {% space %}href="https://{%s path %}">
           open source
         </a>
-        by
+        {% space %}by{% space %}
         <a rel="author"
-           hreflang="en"
-           href="https://toby3d.me/">
+        {% space %}href="https://toby3d.me/">
           toby3d
         </a>
       </p>
@@ -124,7 +123,8 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
       <small>
         {%= p.t("version") %}
         <a href="https://{%s path %}/commit/{%s vcsRevision %}"
-           target="_blank">
+        {% space %}target="_blank">
+
           {%s vcsRevision[:7] -%}
         </a>
       </small>
@@ -133,4 +133,4 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
   </body>
 </html>
 {% endfunc %}
-{% endcollapsespace %}
+{% endstripspace %}
