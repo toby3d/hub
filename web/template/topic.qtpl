@@ -1,0 +1,10 @@
+{% code type Topic struct {
+  *BaseOf
+  Subscribers int
+} %}
+
+{% collapsespace %}
+{% func (p *Topic) body() %}
+<p>{%= p.t("%d subscribers", p.Subscribers) %}</p>
+{% endfunc %}
+{% endcollapsespace %}

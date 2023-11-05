@@ -1,0 +1,67 @@
+{
+    "language": "en",
+    "messages": [
+        {
+            "id": "version",
+            "message": "version",
+            "translation": "version",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{Name} logo",
+            "message": "{Name} logo",
+            "translation": "{Name} logo",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p.name"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Dead simple WebSub hub",
+            "message": "Dead simple WebSub hub",
+            "translation": "Dead simple WebSub hub",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "How to publish and consume?",
+            "message": "How to publish and consume?",
+            "translation": "How to publish and consume?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "What the spec?",
+            "message": "What the spec?",
+            "translation": "What the spec?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{Subscribers} subscribers",
+            "message": "{Subscribers} subscribers",
+            "translation": "{Subscribers} subscribers",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Subscribers",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "p.Subscribers"
+                }
+            ],
+            "fuzzy": true
+        }
+    ]
+}

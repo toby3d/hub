@@ -1,0 +1,15 @@
+[Unit]
+Description=WebSub Hub
+After=syslog.target
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/hub/env
+RestartSec=2s
+Type=simple
+WorkingDirectory=/etc/hub/
+ExecStart=/etc/hub/hub
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

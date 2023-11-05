@@ -1,0 +1,138 @@
+:root {
+  --on: initial;
+  --off: ;
+  --ratio: 1.5;
+  --measure: 60ch;
+  --cover-space: 1rem;
+  --center-gutter: var(--off);
+  --stack-space: 0.5rem;
+  color-scheme: light dark;
+  line-height: var(--ratio);
+  font-size: calc(1em + 0.333vw);
+}
+
+.page {
+  background-color: hsl(0, 0%, 95%);
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page,
+  [role="img"],
+  img:not([src*=".svg"]) {  
+    filter: invert(100%);
+  }
+}
+
+*,
+:after,
+:before {
+  background-color: inherit;
+  box-sizing: border-box;
+  color: inherit;
+  font-family: inherit;
+  margin: 0;
+  max-width: var(--measure);
+  overflow-wrap: break-word;
+  padding: 0;
+}
+
+html,
+body,
+div,
+header,
+nav,
+main,
+footer {
+  max-width: none;
+}
+
+img,
+[role="img"] {
+  background-color: transparent;
+  width: 100%;
+}
+
+hr {
+  border: 1px solid hsla(0, 0%, 0%, 0.6);
+}
+
+a {
+  cursor: pointer;
+  display: inline-block;
+}
+
+a:focus-visible {
+  outline: 4px solid hsl(320, 100%, 72%);
+}
+
+ul {
+  padding-left: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+small {
+  font-size: 0.5rem;
+}
+
+.page__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: var(--cover-space);
+}
+
+.page__body > * {
+  margin-bottom: var(--cover-space);
+  margin-top: var(--cover-space);
+}
+
+.page__body > :first-child:not(.body__main) {
+  margin-top: 0;
+}
+
+.page__body > :last-child:not(.body__main) {
+  margin-bottom: 0;
+}
+
+.page__body > .body__main {
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.center {
+  box-sizing: content-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--measure);
+  padding-left: var(--center-gutter);
+  padding-right: var(--center-gutter);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.stack > * + * {
+  margin-top: var(--stack-space);
+}
+
+.text-align_center {
+  text-align: center;
+}

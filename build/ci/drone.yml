@@ -1,0 +1,49 @@
+---
+kind: "pipeline"
+type: "docker"
+name: "default"
+
+environment:
+  CGO_ENABLED: 0
+
+steps:
+  - name: "test"
+    image: "golang:1.20"
+    volumes:
+      - name: "modules"
+        path: "/go/pkg/mod"
+    commands:
+      - "make check"
+
+  - name: "build"
+    image: "golang:1.20"
+    volumes:
+      - name: "modules"
+        path: "/go/pkg/mod"
+    commands:
+      - "make"
+    depends_on:
+      - "test"
+
+  - name: "delivery"
+    image: "drillster/drone-rsync"
+    settings:
+      hosts:
+        from_secret: "SSH_HOST_IP"
+      key:
+        from_secret: "SSH_PRIVATE_KEY"
+      source: "./hub"
+      target: "/etc/hub/hub"
+      prescript:
+        - "systemctl stop hub"
+      script:
+        - "systemctl start hub"
+    depends_on:
+      - build
+    when:
+      branch:
+        - master
+
+volumes:
+  - name: modules
+    temp: {}

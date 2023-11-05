@@ -1,0 +1,136 @@
+{% import (
+  "runtime/debug"
+
+  "golang.org/x/text/language"
+  "golang.org/x/text/message"
+) %}
+
+{% interface Page {
+  body()
+  head()
+  lang()
+  t(format message.Reference, args ...any)
+  title()
+} %}
+
+{% code
+type BaseOf struct {
+  language language.Tag
+  printer  *message.Printer
+  name string
+}
+
+func NewBaseOf(lang language.Tag, name string) *BaseOf {
+  return &BaseOf{
+    language: lang,
+    printer: message.NewPrinter(lang),
+    name: name,
+  }
+}
+%}
+
+{% collapsespace %}
+{% func (p *BaseOf) lang() %}
+{%s p.language.String() %}
+{% endfunc %}
+
+{% func (p *BaseOf) title() %}
+{%s p.name %}
+{% endfunc %}
+
+{% func (p *BaseOf) head() %}
+{% comment %}https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs{% endcomment %}
+<link rel="manifest"
+      href="/static/manifest.webmanifest">
+
+<link rel="icon"
+      href="/static/favicon.ico"
+      sizes="any">
+
+<link rel="icon"
+      href="/static/icon.svg"
+      type="image/svg+xml">
+
+<link rel="apple-touch-icon"
+      href="/static/apple-touch-icon.png">
+{% endfunc %}
+
+{% func (p *BaseOf) body() %}{% endfunc %}
+
+{% func (p *BaseOf) t(format message.Reference, args ...any) %}
+{%s p.printer.Sprintf(format, args...) %}
+{% endfunc %}
+
+{% func Template(p Page) %}
+<!DOCTYPE html>
+<html class="page"
+      lang="{%= p.lang() %}"
+      dir="ltr">
+
+  <head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>{%= p.title() %}</title>
+
+    <link rel="preload stylesheet"
+          as="style"
+          href="/static/style.css"
+          type="text/css">
+
+    {%= p.head() %}
+  </head>
+
+  <body class="page__body cover">
+    {%= p.body() %}
+
+    {% code
+      var path, vcsRevision string
+
+      if bi, ok := debug.ReadBuildInfo(); ok {
+        path = bi.Path
+
+        for i := range bi.Settings {
+          if bi.Settings[i].Key != "vcs.revision" {
+            continue
+          }
+
+          vcsRevision = bi.Settings[i].Value
+        }
+      }
+    %}
+
+    <footer class="[ body__footer ][ center ][ text-align_center ]">
+      <p>
+        Made with
+        <span role="img"
+              aria-label="love">
+          ❤️
+        </span>
+        to
+        <a rel="external"
+           href="https://{%s path %}">
+          open source
+        </a>
+        by
+        <a rel="author"
+           hreflang="en"
+           href="https://toby3d.me/">
+          toby3d
+        </a>
+      </p>
+
+      {% if vcsRevision != "" %}
+      <small>
+        {%= p.t("version") %}
+        <a href="https://{%s path %}/commit/{%s vcsRevision %}"
+           target="_blank">
+          {%s vcsRevision[:7] -%}
+        </a>
+      </small>
+      {% endif %}
+    </footer>
+  </body>
+</html>
+{% endfunc %}
+{% endcollapsespace %}

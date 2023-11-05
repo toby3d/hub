@@ -1,0 +1,55 @@
+{
+    "language": "ru",
+    "messages": [
+        {
+            "id": "version",
+            "message": "version",
+            "translation": "версия"
+        },
+        {
+            "id": "{Name} logo",
+            "message": "{Name} logo",
+            "translation": "логотип {Name}",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p.name"
+                }
+            ]
+        },
+        {
+            "id": "Dead simple WebSub hub",
+            "message": "Dead simple WebSub hub",
+            "translation": "Простейший хаб WebSub"
+        },
+        {
+            "id": "How to publish and consume?",
+            "message": "How to publish and consume?",
+            "translation": "Как публиковать и принимать?"
+        },
+        {
+            "id": "What the spec?",
+            "message": "What the spec?",
+            "translation": "В чём спека?"
+        },
+        {
+            "id": "{Subscribers} subscribers",
+            "message": "{Subscribers} subscribers",
+            "translation": "{Subscribers} подписчиков",
+            "placeholders": [
+                {
+                    "id": "Subscribers",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "p.Subscribers"
+                }
+            ]
+        }
+    ]
+}
