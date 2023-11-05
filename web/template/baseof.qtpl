@@ -102,17 +102,17 @@ func NewBaseOf(lang language.Tag, name string) *BaseOf {
 
     <footer class="[ body__footer ][ center ][ text-align_center ]">
       <p>
-        Made with
+        Made with{% space %}
         <span role="img"
         {% space %}aria-label="love">
           ❤️
         </span>
-        to
+        {% space %}to{% space %}
         <a rel="external"
         {% space %}href="https://{%s path %}">
           open source
         </a>
-        by
+        {% space %}by{% space %}
         <a rel="author"
         {% space %}href="https://toby3d.me/">
           toby3d

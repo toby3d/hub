@@ -61,60 +61,68 @@ func (p *Home) streambody(qw422016 *qt422016.Writer) {
 //line web/template/home.qtpl:33
 	qw422016.N().S(` `)
 //line web/template/home.qtpl:33
-	qw422016.N().S(`aria-label="ping pong">🏓</span><a rel="external help"`)
-//line web/template/home.qtpl:38
+	qw422016.N().S(`aria-label="ping pong">🏓</span>`)
+//line web/template/home.qtpl:37
 	qw422016.N().S(` `)
-//line web/template/home.qtpl:38
+//line web/template/home.qtpl:37
+	qw422016.N().S(`<a rel="external help"`)
+//line web/template/home.qtpl:39
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:39
 	qw422016.N().S(`hreflang="en"`)
-//line web/template/home.qtpl:39
+//line web/template/home.qtpl:40
 	qw422016.N().S(` `)
-//line web/template/home.qtpl:39
+//line web/template/home.qtpl:40
 	qw422016.N().S(`href="https://indieweb.org/how-to-push">`)
-//line web/template/home.qtpl:41
+//line web/template/home.qtpl:42
 	p.streamt(qw422016, "How to publish and consume?")
-//line web/template/home.qtpl:41
+//line web/template/home.qtpl:42
 	qw422016.N().S(`</a></li><li><span role="img"`)
-//line web/template/home.qtpl:46
+//line web/template/home.qtpl:47
 	qw422016.N().S(` `)
-//line web/template/home.qtpl:46
-	qw422016.N().S(`aria-label="pages">📑</span><a rel="external help"`)
+//line web/template/home.qtpl:47
+	qw422016.N().S(`aria-label="pages">📑</span>`)
 //line web/template/home.qtpl:51
 	qw422016.N().S(` `)
 //line web/template/home.qtpl:51
+	qw422016.N().S(`<a rel="external help"`)
+//line web/template/home.qtpl:53
+	qw422016.N().S(` `)
+//line web/template/home.qtpl:53
 	qw422016.N().S(`hreflang="en"`)
-//line web/template/home.qtpl:52
+//line web/template/home.qtpl:54
 	qw422016.N().S(` `)
-//line web/template/home.qtpl:52
+//line web/template/home.qtpl:54
 	qw422016.N().S(`href="https://www.w3.org/TR/websub/">`)
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:56
 	p.streamt(qw422016, "What the spec?")
-//line web/template/home.qtpl:54
+//line web/template/home.qtpl:56
 	qw422016.N().S(`</a></li></ul></main>`)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 }
 
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 func (p *Home) writebody(qq422016 qtio422016.Writer) {
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	p.streambody(qw422016)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	qt422016.ReleaseWriter(qw422016)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 }
 
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 func (p *Home) body() string {
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	qb422016 := qt422016.AcquireByteBuffer()
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	p.writebody(qb422016)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	qs422016 := string(qb422016.B)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	qt422016.ReleaseByteBuffer(qb422016)
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 	return qs422016
-//line web/template/home.qtpl:59
+//line web/template/home.qtpl:61
 }

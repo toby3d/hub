@@ -34,6 +34,7 @@
 
         🏓
       </span>
+      {% space %}
       <a rel="external help"
       {% space %}hreflang="en"
       {% space %}href="https://indieweb.org/how-to-push">
@@ -47,6 +48,7 @@
 
         📑
       </span>
+      {% space %}
       <a rel="external help"
       {% space %}hreflang="en"
       {% space %}href="https://www.w3.org/TR/websub/">

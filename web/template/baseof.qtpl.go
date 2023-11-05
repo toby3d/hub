@@ -320,11 +320,23 @@ func StreamTemplate(qw422016 *qt422016.Writer, p Page) {
 	}
 
 //line web/template/baseof.qtpl:101
-	qw422016.N().S(`<footer class="[ body__footer ][ center ][ text-align_center ]"><p>Made with<span role="img"`)
+	qw422016.N().S(`<footer class="[ body__footer ][ center ][ text-align_center ]"><p>Made with`)
+//line web/template/baseof.qtpl:105
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:105
+	qw422016.N().S(`<span role="img"`)
 //line web/template/baseof.qtpl:107
 	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:107
-	qw422016.N().S(`aria-label="love">❤️</span>to<a rel="external"`)
+	qw422016.N().S(`aria-label="love">❤️</span>`)
+//line web/template/baseof.qtpl:110
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:110
+	qw422016.N().S(`to`)
+//line web/template/baseof.qtpl:110
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:110
+	qw422016.N().S(`<a rel="external"`)
 //line web/template/baseof.qtpl:112
 	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:112
@@ -332,7 +344,15 @@ func StreamTemplate(qw422016 *qt422016.Writer, p Page) {
 //line web/template/baseof.qtpl:112
 	qw422016.E().S(path)
 //line web/template/baseof.qtpl:112
-	qw422016.N().S(`">open source</a>by<a rel="author"`)
+	qw422016.N().S(`">open source</a>`)
+//line web/template/baseof.qtpl:115
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:115
+	qw422016.N().S(`by`)
+//line web/template/baseof.qtpl:115
+	qw422016.N().S(` `)
+//line web/template/baseof.qtpl:115
+	qw422016.N().S(`<a rel="author"`)
 //line web/template/baseof.qtpl:117
 	qw422016.N().S(` `)
 //line web/template/baseof.qtpl:117
