@@ -19,7 +19,7 @@ type Topic struct {
 func TestTopic(tb testing.TB) *Topic {
 	tb.Helper()
 
-	now := time.Now().UTC().Add(-1 * time.Hour)
+	now := time.Now().UTC().Add(-1 * time.Hour).Round(time.Second)
 
 	return &Topic{
 		CreatedAt:   now,
