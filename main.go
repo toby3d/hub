@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/caarlos0/env/v7"
 	"golang.org/x/text/feature/plural"
+	"github.com/caarlos0/env/v10"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
@@ -30,7 +30,7 @@ import (
 	"source.toby3d.me/toby3d/hub/internal/urlutil"
 )
 
-var logger = log.New(os.Stdout, "hub", log.LstdFlags)
+var logger = log.New(os.Stdout, "hub\t", log.LstdFlags)
 
 //go:embed web/static/*
 var static embed.FS
@@ -56,9 +56,8 @@ func main() {
 	ctx := context.Background()
 
 	config := new(domain.Config)
-	if err := env.Parse(config, env.Options{
+	if err := env.ParseWithOptions(config, env.Options{
 		Prefix:                "HUB_",
-		TagName:               "env",
 		UseFieldNameByDefault: true,
 	}); err != nil {
 		logger.Fatalln(err)
