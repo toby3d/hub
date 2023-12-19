@@ -44,24 +44,24 @@ type (
 )
 
 const (
-	queryTable = `CREATE TABLE IF NOT EXISTS topics (
+	queryTable string = `CREATE TABLE IF NOT EXISTS topics (
 		created_at DATETIME,
 		updated_at DATETIME,
 		url TEXT PRIMARY KEY,
 		content_type TEXT,
 		content BLOB
 	)`
-	queryIndex  = `CREATE INDEX urls ON topics (url);`
-	queryCreate = `INSERT INTO topics (created_at, updated_at, url, content_type, content)
-		       VALUES (:created_at, :updated_at, :url, :content_type, :content);`
-	queryFetch  = `SELECT * FROM topics;`
-	queryRead   = `SELECT * FROM topics WHERE url = ?;`
-	queryUpdate = `UPDATE topics
-		       SET updated_at = :updated_at,
-		           content_type = :content_type,
-		           content = :content
-		       WHERE url = :url;`
-	queryDelete = `DELETE FROM topics WHERE url = ?;`
+	queryIndex  string = `CREATE INDEX urls ON topics (url);`
+	queryCreate string = `INSERT INTO topics (created_at, updated_at, url, content_type, content)
+		       		VALUES (:created_at, :updated_at, :url, :content_type, :content);`
+	queryFetch  string = `SELECT * FROM topics;`
+	queryRead   string = `SELECT * FROM topics WHERE url = ?;`
+	queryUpdate string = `UPDATE topics
+				SET updated_at = :updated_at,
+					content_type = :content_type,
+					content = :content
+				WHERE url = :url;`
+	queryDelete string = `DELETE FROM topics WHERE url = ?;`
 )
 
 func NewSQLiteTopicRepository(db *sqlx.DB) (topic.Repository, error) {
