@@ -62,7 +62,7 @@ const (
 		secret TEXT,
 		PRIMARY KEY (topic, callback)
 	)`
-	queryIndex  string = `CREATE INDEX idx_subscription ON ` + table + ` (topic, callback);`
+	queryIndex  string = `CREATE INDEX IF NOT EXISTS idx_subscription ON ` + table + ` (topic, callback);`
 	queryCreate string = `INSERT INTO ` + table + ` (created_at, updated_at, synced_at, delete_at, topic, ` +
 		`callback, secret)
 		VALUES (:created_at, :updated_at, :synced_at, :delete_at, :topic, :callback, :secret);`
