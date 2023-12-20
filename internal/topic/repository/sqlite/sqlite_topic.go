@@ -52,7 +52,7 @@ const (
 		content_type TEXT,
 		content BLOB
 	)`
-	queryIndex  string = `CREATE INDEX urls ON ` + table + ` (url);`
+	queryIndex  string = `CREATE INDEX idx_topic ON ` + table + ` (url);`
 	queryCreate string = `INSERT INTO ` + table + ` (created_at, updated_at, url, content_type, content)
 		       		VALUES (:created_at, :updated_at, :url, :content_type, :content);`
 	queryFetch  string = `SELECT * FROM ` + table + `;`
