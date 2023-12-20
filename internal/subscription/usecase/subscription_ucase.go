@@ -87,7 +87,7 @@ func (ucase *subscriptionUseCase) Subscribe(ctx context.Context, s domain.Subscr
 }
 
 func (ucase *subscriptionUseCase) Unsubscribe(ctx context.Context, s domain.Subscription) (bool, error) {
-	if err := ucase.subscriptions.Delete(ctx, s.SUID()); err != nil {
+	if _, err := ucase.subscriptions.Delete(ctx, s.SUID()); err != nil {
 		return false, fmt.Errorf("cannot unsubscribe: %w", err)
 	}
 

@@ -39,8 +39,8 @@ func (s Subscription) AddQuery(q url.Values) {
 
 func (s Subscription) SUID() SUID {
 	return SUID{
-		topic:    s.Topic.String(),
-		callback: s.Callback.String(),
+		topic:    s.Topic,
+		callback: s.Callback,
 	}
 }
 
