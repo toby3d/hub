@@ -39,13 +39,13 @@ func (repo *memorySubscriptionRepository) Create(ctx context.Context, suid domai
 	return nil
 }
 
-func (repo *memorySubscriptionRepository) Delete(ctx context.Context, suid domain.SUID) error {
+func (repo *memorySubscriptionRepository) Delete(ctx context.Context, suid domain.SUID) (bool, error) {
 	if _, err := repo.Get(ctx, suid); err != nil {
 		if !errors.Is(err, subscription.ErrNotExist) {
-			return fmt.Errorf("cannot delete subscription: %w", err)
+			return false, fmt.Errorf("cannot delete subscription: %w", err)
 		}
 
-		return nil
+		return false, nil
 	}
 
 	repo.mutex.Lock()
@@ -53,7 +53,7 @@ func (repo *memorySubscriptionRepository) Delete(ctx context.Context, suid domai
 
 	delete(repo.subscriptions, suid)
 
-	return nil
+	return true, nil
 }
 
 func (repo *memorySubscriptionRepository) Get(_ context.Context, suid domain.SUID) (*domain.Subscription, error) {
