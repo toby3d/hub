@@ -49,20 +49,23 @@ var messageKeyToIndex = map[string]int{
 
 var enIndex = []uint32{ // 7 elements
 	0x00000000, 0x00000008, 0x00000013, 0x0000002a,
-	0x00000046, 0x00000055, 0x00000067,
+	0x00000046, 0x00000055, 0x00000092,
 } // Size: 52 bytes
 
-const enData string = "" + // Size: 103 bytes
+const enData string = "" + // Size: 146 bytes
 	"\x02version\x02%[1]s logo\x02Dead simple WebSub hub\x02How to publish an" +
-	"d consume?\x02What the spec?\x02%[1]d subscribers"
+	"d consume?\x02What the spec?\x14\x01\x81\x01\x00=\x00\x0f\x02no subscrib" +
+	"ers=\x01\x0f\x02one subscriber\x00\x12\x02%[1]d subscribers"
 
 var ruIndex = []uint32{ // 7 elements
 	0x00000000, 0x0000000d, 0x00000022, 0x00000045,
-	0x0000007a, 0x00000090, 0x000000ad,
+	0x0000007a, 0x00000090, 0x00000111,
 } // Size: 52 bytes
 
-const ruData string = "" + // Size: 173 bytes
+const ruData string = "" + // Size: 273 bytes
 	"\x02версия\x02логотип %[1]s\x02Простейший хаб WebSub\x02Как публиковать " +
-	"и принимать?\x02В чём спека?\x02%[1]d подписчиков"
+	"и принимать?\x02В чём спека?\x14\x01\x81\x01\x00=\x00\x1e\x02без подпис" +
+	"чиков=\x01\x1c\x02один подписчик\x04\x1b\x02%[1]d подписчика\x00\x1d" +
+	"\x02%[1]d подписчиков"
 
-	// Total table size 380 bytes (0KiB); checksum: 7D8C2E8B
+	// Total table size 523 bytes (0KiB); checksum: 6AB3BB61

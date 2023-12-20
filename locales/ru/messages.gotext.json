@@ -39,7 +39,26 @@
         {
             "id": "{Subscribers} subscribers",
             "message": "{Subscribers} subscribers",
-            "translation": "{Subscribers} подписчиков",
+            "translation": {
+                "select": {
+                    "feature": "plural",
+                    "arg": "Subscribers",
+                    "cases": {
+                        "=0": {
+                            "msg": "без подписчиков"
+                        },
+                        "=1": {
+                            "msg": "один подписчик"
+                        },
+                        "few": {
+                            "msg": "{Subscribers} подписчика"
+                        },
+                        "other": {
+                            "msg": "{Subscribers} подписчиков"
+                        }
+                    }
+                }
+            },
             "placeholders": [
                 {
                     "id": "Subscribers",

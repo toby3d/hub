@@ -16,7 +16,6 @@ import (
 
 	"github.com/caarlos0/env/v10"
 	"github.com/jmoiron/sqlx"
-	"golang.org/x/text/feature/plural"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 	_ "modernc.org/sqlite"
@@ -36,23 +35,6 @@ var logger = log.New(os.Stdout, "hub\t", log.LstdFlags)
 
 //go:embed web/static/*
 var static embed.FS
-
-func init() {
-	message.Set(language.English, "%d subscribers",
-		plural.Selectf(1, "%d",
-			"one", "%d subscriber",
-			"other", "%d subscribers",
-		),
-	)
-	message.Set(language.Russian, "%d subscribers",
-		plural.Selectf(1, "%d",
-			"one", "%d подписчик",
-			"few", "%d подписчика",
-			"many", "%d подписчиков",
-			"other", "%d подписчика",
-		),
-	)
-}
 
 func main() {
 	ctx := context.Background()
