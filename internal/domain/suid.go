@@ -5,15 +5,27 @@ import "net/url"
 // SUID describes a subscription's unique key is the tuple ([Topic] URL,
 // Subscriber [Callback] URL).
 type SUID struct {
-	topic    string
-	callback string
+	topic    *url.URL
+	callback *url.URL
 }
 
 func NewSSID(topic Topic, callback *url.URL) SUID {
 	return SUID{
-		topic:    topic.Self.String(),
-		callback: callback.String(),
+		topic:    topic.Self,
+		callback: callback,
 	}
+}
+
+func (suid SUID) Topic() *url.URL {
+	u, _ := url.Parse(suid.topic.String())
+
+	return u
+}
+
+func (suid SUID) Callback() *url.URL {
+	u, _ := url.Parse(suid.callback.String())
+
+	return u
 }
 
 func (suid SUID) Equal(target SUID) bool {
@@ -21,5 +33,5 @@ func (suid SUID) Equal(target SUID) bool {
 }
 
 func (suid SUID) GoString() string {
-	return "domain.SUID(" + suid.topic + ":" + suid.callback + ")"
+	return "domain.SUID(" + suid.topic.String() + ":" + suid.callback.String() + ")"
 }

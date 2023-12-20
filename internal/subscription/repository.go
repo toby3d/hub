@@ -15,7 +15,7 @@ type (
 		Get(ctx context.Context, suid domain.SUID) (*domain.Subscription, error)
 		Fetch(ctx context.Context, topic *domain.Topic) ([]domain.Subscription, error)
 		Update(ctx context.Context, suid domain.SUID, update UpdateFunc) error
-		Delete(ctx context.Context, suid domain.SUID) error
+		Delete(ctx context.Context, suid domain.SUID) (bool, error)
 	}
 )
 

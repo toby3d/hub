@@ -24,10 +24,11 @@ type Secret struct {
 
 var ErrSyntaxSecret = NewError("secret MUST be less than 200 bytes in length")
 
-var lengthMax = 200
+// SecretLength represend maximum byte size of client secret.
+const SecretLength int = 200
 
 func ParseSecret(raw string) (*Secret, error) {
-	if len(raw) >= lengthMax {
+	if len(raw) >= SecretLength {
 		return nil, ErrSyntaxSecret
 	}
 
@@ -54,7 +55,7 @@ func (s Secret) String() string {
 func TestSecret(tb testing.TB) *Secret {
 	tb.Helper()
 
-	src := make([]byte, rand.Intn(lengthMax/2))
+	src := make([]byte, rand.Intn(SecretLength/2))
 	if _, err := cryptorand.Read(src); err != nil {
 		tb.Fatal(err)
 	}
@@ -66,7 +67,7 @@ func TestSecret(tb testing.TB) *Secret {
 func TestSecretInvalid(tb testing.TB) *Secret {
 	tb.Helper()
 
-	src := make([]byte, lengthMax*2)
+	src := make([]byte, SecretLength*2)
 	if _, err := cryptorand.Read(src); err != nil {
 		tb.Fatal(err)
 	}
