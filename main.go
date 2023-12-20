@@ -14,18 +14,20 @@ import (
 	"path/filepath"
 	"time"
 
-	"golang.org/x/text/feature/plural"
 	"github.com/caarlos0/env/v10"
+	"github.com/jmoiron/sqlx"
+	"golang.org/x/text/feature/plural"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
+	_ "modernc.org/sqlite"
 
 	"source.toby3d.me/toby3d/hub/internal/domain"
 	hubhttprelivery "source.toby3d.me/toby3d/hub/internal/hub/delivery/http"
 	hubucase "source.toby3d.me/toby3d/hub/internal/hub/usecase"
 	"source.toby3d.me/toby3d/hub/internal/middleware"
-	subscriptionmemoryrepo "source.toby3d.me/toby3d/hub/internal/subscription/repository/memory"
+	subscriptionsqliterepo "source.toby3d.me/toby3d/hub/internal/subscription/repository/sqlite"
 	subscriptionucase "source.toby3d.me/toby3d/hub/internal/subscription/usecase"
-	topicmemoryrepo "source.toby3d.me/toby3d/hub/internal/topic/repository/memory"
+	topicsqliterepo "source.toby3d.me/toby3d/hub/internal/topic/repository/sqlite"
 	topicucase "source.toby3d.me/toby3d/hub/internal/topic/usecase"
 	"source.toby3d.me/toby3d/hub/internal/urlutil"
 )
@@ -55,23 +57,36 @@ func init() {
 func main() {
 	ctx := context.Background()
 
+	static, err := fs.Sub(static, filepath.Join("web"))
+	if err != nil {
+		logger.Fatalln(err)
+	}
+
 	config := new(domain.Config)
-	if err := env.ParseWithOptions(config, env.Options{
+	if err = env.ParseWithOptions(config, env.Options{
 		Prefix:                "HUB_",
 		UseFieldNameByDefault: true,
 	}); err != nil {
 		logger.Fatalln(err)
 	}
 
-	static, err := fs.Sub(static, filepath.Join("web"))
+	db, err := sqlx.Open("sqlite", config.DB)
+	if err != nil {
+		logger.Fatalf("cannot open database on path %s: %s", config.DB, err)
+	}
+
+	topics, err := topicsqliterepo.NewSQLiteTopicRepository(db)
+	if err != nil {
+		logger.Fatalln(err)
+	}
+
+	subscriptions, err := subscriptionsqliterepo.NewSQLiteSubscriptionRepository(db)
 	if err != nil {
 		logger.Fatalln(err)
 	}
 
 	client := &http.Client{Timeout: 5 * time.Second}
 	matcher := language.NewMatcher(message.DefaultCatalog.Languages())
-	subscriptions := subscriptionmemoryrepo.NewMemorySubscriptionRepository()
-	topics := topicmemoryrepo.NewMemoryTopicRepository()
 	topicService := topicucase.NewTopicUseCase(topics, client)
 	subscriptionService := subscriptionucase.NewSubscriptionUseCase(subscriptions, topics, client)
 	hubService := hubucase.NewHubUseCase(topics, subscriptions, client, config.BaseURL)
