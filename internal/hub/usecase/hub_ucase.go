@@ -110,7 +110,8 @@ func (ucase *hubUseCase) ListenAndServe(ctx context.Context) error {
 
 			for j := range subscriptions {
 				if subscriptions[j].Expired(ts) {
-					if err = ucase.subscriptions.Delete(ctx, subscriptions[j].SUID()); err != nil {
+					_, err = ucase.subscriptions.Delete(ctx, subscriptions[j].SUID())
+					if err != nil {
 						return fmt.Errorf("cannot remove expired subcription: %w", err)
 					}
 
@@ -150,7 +151,7 @@ func (ucase *hubUseCase) push(ctx context.Context, s domain.Subscription, t doma
 	// that the subscription has been deleted, and the hub MAY terminate the
 	// subscription if it receives that code as a response.
 	if resp.StatusCode == http.StatusGone {
-		if err = ucase.subscriptions.Delete(ctx, suid); err != nil {
+		if _, err = ucase.subscriptions.Delete(ctx, suid); err != nil {
 			return false, fmt.Errorf("cannot remove deleted subscription: %w", err)
 		}
 
